@@ -33,11 +33,19 @@ class Isl < Formula
 
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--with-gmp=system",
-                          "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}"
+    args = %W[
+            --disable-dependency-tracking
+            --disable-silent-rules
+            --prefix=#{prefix}
+            --with-gmp=system
+            --with-gmp-prefix=#{Formula["gmp"].opt_prefix}
+        ]
+    if OS.linux?
+        args << "--disable-shared"
+        args << "--host=core2-unknown-linux-gnu"
+        args << "--build=core2-unknown-linux-gnu"
+    end
+    system "./configure", *args
     system "make"
     system "make", "install"
     (share/"gdb/auto-load").install Dir["#{lib}/*-gdb.py"]

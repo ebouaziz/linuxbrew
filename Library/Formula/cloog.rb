@@ -29,17 +29,23 @@ class Cloog < Formula
   def install
     system "./autogen.sh" if build.head?
 
-    args = [
-      "--disable-dependency-tracking",
-      "--disable-silent-rules",
-      "--prefix=#{prefix}",
-      "--with-gmp=system",
-      "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}",
-      "--with-isl=system",
-      "--with-isl-prefix=#{Formula["isl"].opt_prefix}"
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --with-gmp=system
+      --with-gmp-prefix=#{Formula["gmp"].opt_prefix}
+      --with-isl=system
+      --with-isl-prefix=#{Formula["isl"].opt_prefix}
     ]
 
     args << "--with-osl=bundled" if build.head?
+
+    if OS.linux?
+        args << "--disable-shared"
+        args << "--host=core2-unknown-linux-gnu"
+        args << "--build=core2-unknown-linux-gnu"
+    end
 
     system "./configure", *args
     system "make install"

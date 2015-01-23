@@ -26,9 +26,12 @@ class Libffi < Formula
   def install
     ENV.deparallelize # https://github.com/Homebrew/homebrew/pull/19267
     ENV.universal_binary
+    args = %W[--disable-debug --disable-dependency-tracking --prefix=#{prefix}]
+    if OS.linux?
+        args << "--disable-shared"
+    end
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *args
     system "make install"
 
     # Move lib64/* to lib/ on Linuxbrew

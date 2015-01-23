@@ -19,7 +19,13 @@ class Gmp < Formula
 
   def install
     ENV.cxx11 if build.cxx11?
-    args = ["--prefix=#{prefix}", "--enable-cxx"]
+    args = %W[--prefix=#{prefix} --enable-cxx]
+
+    if OS.linux?
+        args << "--disable-shared"
+        args << "--host=core2-unknown-linux-gnu"
+        args << "--build=core2-unknown-linux-gnu"
+    end
 
     if build.build_32_bit?
       ENV.m32

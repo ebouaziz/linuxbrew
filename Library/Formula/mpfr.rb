@@ -35,7 +35,14 @@ class Mpfr < Formula
 
   def install
     ENV.m32 if build.build_32_bit?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    if OS.linux?
+        args << "--disable-shared"
+        #args << "--disable-dependency-tracking"
+        args << "--host=core2-unknown-linux-gnu"
+        args << "--build=core2-unknown-linux-gnu"
+    end
+    system "./configure", *args
     system "make"
     system "make", "check"
     system "make", "install"
