@@ -33,7 +33,8 @@ class Fontconfig < Formula
                           "--with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts",
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
-                          "--sysconfdir=#{etc}"
+                          "--sysconfdir=#{etc}",
+                          "--disable-docs"
     system "make", "install", "RUN_FC_CACHE_TEST=false"
   end
 
