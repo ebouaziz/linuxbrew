@@ -40,7 +40,7 @@ sudo apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl
 ### Fedora
 
 ```sh
-sudo yum groupinstall 'Development Tools' && sudo yum install curl git m4 ruby texinfo bzip2-devel curl-devel expat-devel ncurses-devel zlib-devel
+sudo yum groupinstall 'Development Tools' && sudo yum install curl git irb m4 ruby texinfo bzip2-devel curl-devel expat-devel ncurses-devel zlib-devel
 ```
 
 Installation
@@ -97,7 +97,7 @@ Please report security issues to security@brew.sh.
 ## Who Are You?
 Linuxbrew is maintained by [Shaun Jackman](https://github.com/sjackman).
 
-Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Jack Nagel](https://github.com/jacknagel), [Mike McQuaid](https://github.com/mikemcquaid), [Brett Koonce](https://github.com/asparagui) and [Tim Smith](https://github.com/tdsmith).
+Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Jack Nagel](https://github.com/jacknagel), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Brett Koonce](https://github.com/asparagui) and [Tim Smith](https://github.com/tdsmith).
 
 Homebrew was originally created by [Max Howell](https://github.com/mxcl).
 
@@ -108,7 +108,16 @@ Code is under the [BSD 2 Clause (NetBSD) license](https://github.com/Homebrew/ho
 We accept tips through Gratipay.
 
 ### Shaun Jackman for Linuxbrew
-[![Gittip](https://img.shields.io/gratipay/sjackman.svg?style=flat)](https://gratipay.com/sjackman/)
+[![Gratipay](https://img.shields.io/gratipay/sjackman.svg?style=flat)](https://gratipay.com/sjackman/)
 
 ### Homebrew
 [![Gratipay](https://img.shields.io/gratipay/Homebrew.svg?style=flat)](https://gratipay.com/Homebrew/)
+
+## Sponsors
+Our CI infrastructure was paid for by [our Kickstarter supporters](https://github.com/Homebrew/homebrew/blob/master/SUPPORTERS.md).
+
+Our CI infrastructure is hosted by [The Positive Internet Company](http://www.positive-internet.com).
+
+Our bottles (binary packages) are hosted by Bintray.
+
+[![Downloads by Bintray](https://bintray.com/docs/images/downloads_by_bintray_96.png)](https://bintray.com/homebrew)

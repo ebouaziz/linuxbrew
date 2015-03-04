@@ -563,7 +563,7 @@ class FormulaInstaller
   end
 
   def install_plist
-    return unless formula.plist
+    return unless OS.mac? && formula.plist
     formula.plist_path.atomic_write(formula.plist)
     formula.plist_path.chmod 0644
   rescue Exception => e
@@ -600,7 +600,7 @@ class FormulaInstaller
   end
 
   def post_install
-    formula.post_install
+    formula.run_post_install
   rescue Exception => e
     opoo "The post-install step did not complete successfully"
     puts "You can try again using `brew postinstall #{formula.name}`"
