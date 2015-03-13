@@ -164,7 +164,7 @@ class Python < Formula
 
     # Write our sitecustomize.py
     rm_rf Dir["#{site_packages}/sitecustomize.py[co]"]
-    (site_packages/"sitecustomize.py").atomic_write(sitecustomize)
+    (site_packages/"sitecustomize.py").atomic_write(sitecustomize) if OS.mac?
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
@@ -282,9 +282,8 @@ class Python < Formula
   end
 
   def caveats; <<-EOS.undent
-    Setuptools and pip have been installed. To update them
-      pip install --upgrade setuptools
-      pip install --upgrade pip
+    Pip and setuptools have been installed. To update them
+      pip install --upgrade pip setuptools
 
     You can install Python packages with
       pip install <package>
