@@ -198,8 +198,15 @@ class FormulaInstaller
     return if ARGV.force?
 
     conflicts = formula.conflicts.select do |c|
-      f = Formulary.factory(c.name)
-      f.linked_keg.exist? && f.opt_prefix.exist?
+      begin
+        f = Formulary.factory(c.name)
+        f.linked_keg.exist? && f.opt_prefix.exist?
+      rescue FormulaUnavailableError
+        raise unless c.name =~ HOMEBREW_TAP_FORMULA_REGEX
+        # If the formula name is in full-qualified name. Let's silently
+        # ignore it as we don't care about things used in taps that aren't
+        # currently tapped.
+      end
     end
 
     raise FormulaConflictError.new(formula, conflicts) unless conflicts.empty?
@@ -347,6 +354,7 @@ class FormulaInstaller
     fi.options           |= tab.used_options
     fi.options           |= dep.options
     fi.options           |= inherited_options
+    fi.build_bottle       = build_bottle? && ENV["HOMEBREW_BUILD_BOTTLE"] == "dependencies"
     fi.build_from_source  = build_from_source?
     fi.verbose            = verbose? && !quieter?
     fi.debug              = debug?
