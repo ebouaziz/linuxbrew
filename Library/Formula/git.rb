@@ -1,24 +1,24 @@
 class Git < Formula
-  homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.3.6.tar.xz"
-  sha256 "3ce01c54e92b47366756f57742280e052412efde65344e31f51ad8a48a7c60fc"
+  homepage "https://git-scm.com"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.4.1.tar.xz"
+  sha256 "72851809632c9d1651290caa4bbd3b3094e92fbc6e0e0eb01c454a945c30ada4"
 
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha256 "e837eeccaa551c2c2a48ab063994bebddb23eb1cb074cb568989f48cc63be89f" => :yosemite
-    sha256 "9df0eac6331615be8134b1451c735571fae9b7df8e94d2ddaefae344390bdc38" => :mavericks
-    sha256 "a5773af4f0cc3ac9475e679b371aced0705975c49dc0f3c688ab78a3efb9b89f" => :mountain_lion
+    sha256 "e3b6a61703106e58138112835f1f8aeeb4b24a0280d38fddcf1e803f4789146c" => :yosemite
+    sha256 "2f79f0e3bda104d15bbc1ad7ad4e0d37f0ecd0cab7399cc282ed69138dd1748b" => :mavericks
+    sha256 "27101e7f52cac4e359938569c1d57ea9f80e88f25a97498d52edccb38a70f663" => :mountain_lion
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.3.6.tar.xz"
-    sha256 "b1356f5cb3e7bf53445b08f24ea6950ef1f80031aedd6cd90e3ec60ff1f06b02"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.4.1.tar.xz"
+    sha256 "ebebd18797b84dd0251ac9ebcd35d55da95e651f18a13e6d8ac7d3c5ccc9d8f0"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.3.6.tar.xz"
-    sha256 "b37439087ae465534588a65380e3acb66d3e6949904ede720febeed1dc5d8b49"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.4.1.tar.xz"
+    sha256 "b899dbf605121c8a7e60517121e1ff362fb4b6f51a204bb64b044b568023161a"
   end
 
   option "with-blk-sha1", "Compile with the block-optimized SHA1 implementation"
@@ -33,6 +33,9 @@ class Git < Formula
   depends_on "openssl" if build.with? "brewed-openssl"
   depends_on "curl" if build.with? "brewed-curl"
   depends_on "go" => :build if build.with? "persistent-https"
+  depends_on "expat" unless OS.mac?
+  depends_on "tcl-tk" unless OS.mac?
+
   # Trigger an install of swig before subversion, as the "swig" doesn't get pulled in otherwise
   # See https://github.com/Homebrew/homebrew/issues/34554
   if build.with? "brewed-svn"
@@ -52,7 +55,7 @@ class Git < Formula
     perl_version = /\d\.\d+/.match(`perl --version`)
 
     if build.with? "brewed-svn"
-      ENV["PERLLIB_EXTRA"] = "#{Formula["subversion"].prefix}/Library/Perl/#{perl_version}/darwin-thread-multi-2level"
+      ENV["PERLLIB_EXTRA"] = "#{Formula["subversion"].opt_prefix}/Library/Perl/#{perl_version}/darwin-thread-multi-2level"
     elsif MacOS.version >= :mavericks
       ENV["PERLLIB_EXTRA"] = %W[
         #{MacOS.active_developer_dir}
@@ -132,6 +135,15 @@ class Git < Formula
     # To avoid this feature hooking into the system OpenSSL, remove it.
     # If you need it, install git --with-brewed-openssl.
     rm "#{libexec}/git-core/git-imap-send" if build.without? "brewed-openssl"
+
+    pod = Dir[lib/"*/*/perllocal.pod"][0]
+    if pod != nil
+      # Remove perllocal.pod, which conflicts with the perl formula.
+      # I don't know why this issue doesn't affect Mac.
+      pod = Pathname.new pod
+      rm pod
+      rmdir [pod.dirname, pod.dirname.dirname]
+    end
   end
 
   def caveats; <<-EOS.undent

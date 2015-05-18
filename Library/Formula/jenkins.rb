@@ -1,13 +1,13 @@
 class Jenkins < Formula
   homepage "https://jenkins-ci.org"
-  url "http://mirrors.jenkins-ci.org/war/1.610/jenkins.war"
-  sha256 "bb5a7b29e359a3743ddf385975bca65221cee89b0a13c5309169601d23952e0e"
+  url "http://mirrors.jenkins-ci.org/war/1.613/jenkins.war"
+  sha256 "1e3f9b095c49c22e91e0f1843a7e7d170387388338a13aed3cd4f77ea50aa47f"
 
   bottle do
     cellar :any
-    sha256 "34444be233ce551b222d52c19e45fcac844d509b78016073a0d4a1f0056f3c31" => :yosemite
-    sha256 "9b50c516ac802b9acd43eeb6431d1a427cbc49bfeb3f7c9d71921ee150c4997e" => :mavericks
-    sha256 "47f98740c072681996b081826e2770cc2d6288f5dabcea7a991c03097a4e6866" => :mountain_lion
+    sha256 "79c3028e1b7c1b683dd551c20766adf9586bc0627789419bbfeccd53306b9e6e" => :yosemite
+    sha256 "db47b6b218255ff467ac2b8121abf4f66584a974e29585dc33332ccf747f7aa5" => :mavericks
+    sha256 "429ae932f90fa85180853e7700bc5f8223e44a1ba27f4dbd268ba3b8596d686d" => :mountain_lion
   end
 
   head do

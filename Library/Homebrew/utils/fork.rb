@@ -17,7 +17,9 @@ module Utils
           rescue Exception => e
             Marshal.dump(e, write)
             write.close
-            exit! 1
+            exit!
+          else
+            exit!(true)
           end
         end
 
@@ -28,6 +30,7 @@ module Utils
             retry unless Process.waitpid(pid, Process::WNOHANG)
           else
             socket.send_io(write)
+            socket.close
           end
           write.close
           data = read.read
