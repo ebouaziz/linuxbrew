@@ -3,22 +3,15 @@ class Qt < Formula
   homepage "https://www.qt.io/"
 
   stable do
-    url "https://download.qt.io/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
-    mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
-    sha256 "8b14dd91b52862e09b8e6a963507b74bc2580787d171feda197badfa7034032c"
-
-    # This patch should be able to be removed with the next stable Qt4 release.
-    patch do
-      url "https://raw.githubusercontent.com/DomT4/scripts/440e3cafde5bf6ec6f50cd28fa5bf89c280f1b53/Homebrew_Resources/Qt/qt4patch.diff"
-      sha256 "b0e597a95b40efe36b093230d0fe3c0461aaa24eb6ff01e084e37e1f61f88114"
-    end
+    url "https://download.qt.io/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz"
+    mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz"
+    sha256 "e2882295097e47fe089f8ac741a95fef47e0a73a3f3cdf21b56990638f626ea0"
   end
 
   bottle do
-    revision 6
-    sha1 "bedfe4e950676a85f9653732d33767fbcce45da5" => :yosemite
-    sha1 "8ee072473ababd49fe85bc6f9bf5ddcdafea8c26" => :mavericks
-    sha1 "668ac1a65811e0ff23230a698725b383c61c1d13" => :mountain_lion
+    sha256 "540e72bee0f660e0aeebe84ce04408fd45642fd987e304c9591b2648af55672b" => :yosemite
+    sha256 "27e20d9f5b17df87e49ae9d6fe15105ac83a79b2a364884cdfd17e55e02d6ea1" => :mavericks
+    sha256 "c03ff74ad662f1aafb048f6d016f76bf510da328752453ae4b7e6aaa6402e9b9" => :mountain_lion
   end
 
   head "https://code.qt.io/qt/qt.git", :branch => "4.8"
@@ -38,6 +31,11 @@ class Qt < Formula
   def install
     ENV.universal_binary if build.universal?
 
+    # Fix this error:
+    # /bin/ld: warning: libQtCLucene.so.4, needed by libQtHelp.so, not found
+    # libQtHelp.so: undefined reference to `QCLuceneIndexWriter::setMergeFactor(int)'
+    ENV["LD_LIBRARY_PATH"] = buildpath/"lib" if OS.linux?
+
     args = ["-prefix", prefix,
             "-system-zlib",
             "-qt-libtiff", "-qt-libpng", "-qt-libjpeg",
@@ -46,13 +44,13 @@ class Qt < Formula
             "-cocoa", "-fast", "-release"]
 
     if ENV.compiler == :clang
-        args << "-platform"
+      args << "-platform"
 
-        if MacOS.version >= :mavericks
-          args << "unsupported/macx-clang-libc++"
-        else
-          args << "unsupported/macx-clang"
-        end
+      if MacOS.version >= :mavericks
+        args << "unsupported/macx-clang-libc++"
+      else
+        args << "unsupported/macx-clang"
+      end
     end
 
     args << "-plugin-sql-mysql" if build.with? "mysql"
