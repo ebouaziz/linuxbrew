@@ -145,6 +145,7 @@ end
 def with_system_path
   old_path = ENV['PATH']
   ENV['PATH'] = '/usr/bin:/bin'
+  ENV.prepend_path 'PATH', HOMEBREW_PREFIX/'bin' unless OS.mac?
   yield
 ensure
   ENV['PATH'] = old_path
@@ -189,8 +190,6 @@ def curl *args
   flags = flags.delete("#") if ARGV.verbose?
 
   args = [flags, HOMEBREW_USER_AGENT, *args]
-  # See https://github.com/Homebrew/homebrew/issues/6103
-  args << "--insecure" if MacOS.version < "10.6"
   args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
   args << "--silent" unless $stdout.tty?
 
