@@ -30,7 +30,12 @@ class Libffi < Formula
         args << "--disable-shared"
     end
     system "./autogen.sh" if build.head?
+<<<<<<< HEAD
     system "./configure", *args
+=======
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+>>>>>>> e558e70c3a4ed643083dd882688cd521bcaea658
     system "make", "install"
 
     # Move lib64/* to lib/ on Linuxbrew
