@@ -33,10 +33,14 @@ class Mpfr < Formula
 
   def install
     ENV.m32 if build.build_32_bit?
+
+    # Fix error makeinfo: command not found
+    # The mpfr.info timestamp is older than the mpfr.texi timestamp.
+    touch "doc/mpfr.info"
+
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
     if OS.linux?
         args << "--disable-shared"
-        #args << "--disable-dependency-tracking"
         args << "--host=core2-unknown-linux-gnu"
         args << "--build=core2-unknown-linux-gnu"
     end
