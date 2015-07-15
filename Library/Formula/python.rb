@@ -4,16 +4,18 @@ class Python < Formula
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
   url "https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz"
   sha256 "eda8ce6eec03e74991abb5384170e7c65fcd7522e409b8e83d7e6372add0f12a"
-  revision 1
+  revision 2
 
   bottle do
-    sha256 "48f629dba5d43bf91154bb07f99d9b1697fe84aacc36ed6bbe79b87bfbae53da" => :yosemite
-    sha256 "15a8bf85d99ea0ca87b4af064a9edf2bba3b8bfff886cf97ad571add526ce204" => :mavericks
-    sha256 "96a86c053ff8593dffabd65b5ba675d751069d5e99bd9c3cfbc6ec770719f12a" => :mountain_lion
+    sha256 "df7af5b6865765e96acdad1922c4983439f8b058845ac5023f8fe8ec79ea3d4e" => :yosemite
+    sha256 "c0fab9719d000e1f6150423538b01059471b6eb1777257f5e71a29e1457311e4" => :mavericks
+    sha256 "90e0f06ef02d3852cd805776ff172e909a2d69c97536ec0fae599d3ebd00bfec" => :mountain_lion
   end
 
-  # Please don't add a wide/ucs4 option as it won't be accepted.
+  # Homebrew doesn't accept a wide/ucs4 option because narrow build is the de facto standard
+  # on Windows and OSX, but wide seems to be the default for linux
   # More details in: https://github.com/Homebrew/homebrew/pull/32368
+  option "with-unicode-ucs4", "Build unicode support with UCS4"
   option :universal
   option "with-quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-tcl-tk", "Use Homebrew's Tk instead of OS X Tk (has optional Cocoa and threads support)"
@@ -95,9 +97,11 @@ class Python < Formula
       --enable-ipv6
       --datarootdir=#{share}
       --datadir=#{share}
+      #{OS.mac? ? "--enable-framework=#{frameworks}" : "--enable-shared"}
+      --without-ensurepip
     ]
-    args << (OS.mac? ? "--enable-framework=#{frameworks}" : "--enable-shared")
     args << "--without-gcc" if ENV.compiler == :clang
+    args << "--enable-unicode=ucs4" if build.with? "unicode-ucs4"
 
     unless MacOS::CLT.installed?
       # Help Python's build system (setuptools/pip) to build things on Xcode-only systems

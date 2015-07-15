@@ -3,12 +3,12 @@ class Python3 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz"
   sha256 "b5b3963533768d5fc325a4d7a6bd6f666726002d696f1d399ec06b043ea996b8"
-  revision 1
+  revision 2
 
   bottle do
-    sha256 "021f88d68c87fe761ba6d158464c60c8c58fee703ed970327d6ebb5fe704cde6" => :yosemite
-    sha256 "4319f624ab2877c676ae79ca4e48a26d23c26acbec4f424866575d6d345da7ab" => :mavericks
-    sha256 "07c908972c96221b467bb4eabfa8e53cc94a4a6f8f5a8e4654d671fa634189b7" => :mountain_lion
+    sha256 "a35778cce2c568bc4ad5e7e461dba8b4204dc9d3c9e4c6b715786efda6be2541" => :yosemite
+    sha256 "5463d81260dc651c13c8c89b642551258f5b9c60499d8aa9bea7e8e3bd361185" => :mavericks
+    sha256 "9b8a317417f5c1ca958c5c17af4fb85b1f8827e33e1422a5b99056d524cbe8e1" => :mountain_lion
   end
 
   head "https://hg.python.org/cpython", :using => :hg
@@ -101,8 +101,9 @@ class Python3 < Formula
       --enable-ipv6
       --datarootdir=#{share}
       --datadir=#{share}
+      #{OS.mac? ? "--enable-framework=#{frameworks}" : "--enable-shared"}
+      --without-ensurepip
     ]
-    args << (OS.mac? ? "--enable-framework=#{frameworks}" : "--enable-shared")
     args << '--without-gcc' if ENV.compiler == :clang
 
     unless MacOS::CLT.installed?
