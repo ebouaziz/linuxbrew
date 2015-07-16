@@ -23,6 +23,11 @@ class Libmpc < Formula
       "--with-gmp=#{Formula["gmp"].opt_prefix}",
       "--with-mpfr=#{Formula["mpfr"].opt_prefix}"
     ]
+    if OS.linux?
+        args << "--disable-shared"
+        args << "--host=core2-unknown-linux-gnu"
+        args << "--build=core2-unknown-linux-gnu"
+    end
 
     system "./configure", *args
     system "make"
