@@ -13,10 +13,14 @@ class Ppl < Formula
   depends_on "gmp"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    args = %W[--disable-debug --disable-dependency-tracking --disable-silent-rules --prefix=#{prefix}]
+
+    if OS.linux?
+        args << "--disable-shared"
+        args << "--host=core2-unknown-linux-gnu"
+        args << "--build=core2-unknown-linux-gnu"
+    end
+    system "./configure", *args
     system "make", "install"
   end
 
