@@ -29,10 +29,11 @@ class Libffi < Formula
     args = %W[--disable-debug --disable-dependency-tracking --prefix=#{prefix}]
     if OS.linux?
         args << "--disable-shared"
+        ENV.append "CFLAGS", "-fPIC"
     end
     system "./autogen.sh" if build.head?
     system "./configure", *args
-    system "make", "install"
+    system "make", "CFLAGS=#{ENV.cflags}", "install"
 
     # Move lib64/* to lib/ on Linuxbrew
     lib64 = Pathname.new "#{lib}64"
