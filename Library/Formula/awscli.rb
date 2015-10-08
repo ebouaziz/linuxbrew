@@ -1,15 +1,15 @@
 class Awscli < Formula
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.45.tar.gz"
-  mirror "https://github.com/aws/aws-cli/archive/1.7.45.tar.gz"
-  sha256 "dc9e8b3de5f5a06e0c205cc0e458eb41a6e46cabb1052008cc0a77abdc642d3e"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.8.7.tar.gz"
+  mirror "https://github.com/aws/aws-cli/archive/1.8.7.tar.gz"
+  sha256 "6ae4170c48ec768465afd2b9e70c6db4cd45673aa5b2f1ee2b0513e94a0d96cd"
 
   bottle do
-    cellar :any
-    sha256 "a3c643b403193381350f2eb1c23b46f5b5ea69e1b89ff2ef2f17c3335a655219" => :yosemite
-    sha256 "9c851f5924bd45c1e6a97f8d7fe914889ccc1c1cf8f540257f97188ee90e973d" => :mavericks
-    sha256 "a4e89c157af86d547c512ad8d1eabae688ea16f72aeffdbbf02eac485e1d2644" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "3beb60f4bf9580934e745369976b3a8ed8fa605587448caa970d5e50b081513c" => :el_capitan
+    sha256 "f9f8df7d772725ac65ef6e6b34e7c367b84bf4001ae3d483372c58080a089c22" => :yosemite
+    sha256 "39ad6a5be6d5d14aef4a930d5f01ca764bae180db74f0a2228ad83b58d2ef10d" => :mavericks
   end
 
   head do
@@ -50,8 +50,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.1.8.tar.gz"
-    sha256 "636d6d64537d5e2f3345587366533a1cc503b50a7d295998bffc89ecc3555f63"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.2.5.tar.gz"
+    sha256 "f9e173ff2193bfe712478afb44a04673895a6b1823586f5993332ed155a82e0d"
   end
 
   resource "docutils" do
@@ -111,7 +111,7 @@ class Awscli < Formula
       aws configure
 
     More information:
-      http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
+      https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
     EOS
   end
 
