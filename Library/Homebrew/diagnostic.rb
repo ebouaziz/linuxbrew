@@ -304,11 +304,20 @@ module Homebrew
       end
 
       def check_for_unsupported_osx
-        if !ARGV.homebrew_developer? && OS::Mac.prerelease? then <<-EOS.undent
-        You are using OS X #{MacOS.version}.
-        We do not provide support for this pre-release version.
-        You may encounter build failures or other breakages.
-        EOS
+        return unless OS.mac?
+        return if ARGV.homebrew_developer?
+        if OS::Mac.prerelease?
+          <<-EOS.undent
+            You are using OS X #{MacOS.version}.
+            We do not provide support for this pre-release version.
+            You may encounter build failures or other breakages.
+          EOS
+        elsif OS::Mac.outdated_release?
+          <<-EOS.undent
+            You are using OS X #{MacOS.version}.
+            We (and Apple) do not provide support for this old version.
+            You may encounter build failures or other breakages.
+          EOS
         end
       end
 
@@ -521,7 +530,7 @@ module Homebrew
       def check_tmpdir_sticky_bit
         # Repair Disk Permissions was removed(?) in El Capitan.
         # https://support.apple.com/en-us/HT201560
-        if MacOS.version < "10.11"
+        if OS.mac? && MacOS.version < "10.11"
           fix_message = "Please run \"Repair Disk Permissions\" in Disk Utility."
         else
           fix_message = "Please execute `sudo chmod +t #{HOMEBREW_TEMP}` in your Terminal"
