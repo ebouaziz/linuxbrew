@@ -787,6 +787,7 @@ module Homebrew
       end
 
       def check_which_pkg_config
+        return unless OS.mac? || Formula["pkg-config"].installed?
         binary = which "pkg-config"
         return if binary.nil?
 
@@ -1054,6 +1055,7 @@ module Homebrew
       end
 
       def check_for_autoconf
+        return unless MacOS::Xcode.installed?
         return unless MacOS::Xcode.provides_autotools?
 
         autoconf = which("autoconf")
