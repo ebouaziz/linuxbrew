@@ -13,6 +13,7 @@ require "requirements/tuntap_requirement"
 require "requirements/unsigned_kext_requirement"
 require "requirements/x11_requirement"
 require "requirements/emacs_requirement"
+require "requirements/glibc_requirement"
 
 class XcodeRequirement < Requirement
   fatal true
@@ -131,13 +132,4 @@ class GitRequirement < Requirement
   fatal true
   default_formula "git"
   satisfy { Utils.git_available? }
-end
-
-# patchelf is used to modify ELF executables and shared libraries on Linux.
-# It is useful in particular for setting the RPATH and dynamic linker
-# of executables and shared libraries after installing a bottle.
-class PatchelfRequirement < Requirement
-  fatal true
-  default_formula "patchelf"
-  satisfy { to_dependency.installed? }
 end
